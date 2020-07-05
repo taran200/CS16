@@ -1,0 +1,138 @@
+﻿C＃企业级开发技术练习16答题卡
+
+班级：19信息管理2班   
+姓名：凌胜鹏
+学号：37
+
+*注：排除答案放置在序号下方。* /
+
+（一）
+使用系统；
+使用System.Collections.Generic;
+使用System.Reflection;
+命名空间ConsoleApp1
+{
+    班级计划
+    {
+        公共类ConditionAttribute：属性{}
+        公职员工
+        {
+            [健康）状况]
+            公共字符串eid { 组; }
+            公共字符串名称{get; 组; }
+            公共诠释年龄{ 组; }
+        }
+        公开课参加
+        {
+            [健康）状况]
+            公共字符串eid { 组; }
+            [健康）状况]
+            公共字符串pid {get; 组; }
+            公众十进制工资 组; }
+            公共十进制joinDate {get; 组; }
+        }
+        静态void Main（string [] args）
+        {
+            无效genSql <T>（）
+            {
+                List <string>更新=新的List <string>（）;
+                List <string>条件=新的List <string>（）;
+                foreach（typeof（T）.GetProperties（）中的var p）
+                {
+                    如果（p.GetCustomAttribute <ConditionAttribute>（）== null）
+                        updates.Add（$“ {p.Name}=@{p.Name}”）;
+                    其他条件。Add（$“ {p.Name}=@{p.Name}”）;
+                }
+                字符串sql = $“ update {typeof（T）.Name} set {string.Join（'，'，更新）}” + $“ where {string.Join（” and“，条件）}”“;
+                Console.WriteLine（sql）;
+            }
+            genSql <Employee>（）;
+            genSql <Participate>（）;
+        }
+    }
+}
+
+（二）
+使用系统；
+命名空间ConsoleApp1
+{
+    班级计划
+    {
+        公共课本
+        {
+            十进制价格 int _amount;
+            公共静态小数totalPrice;
+            公共小数subTotalPrice {获取{返回_price * _amount; }}
+            公共书籍
+            {
+                _price = 100; _amount = 1;
+                totalPrice + = 100;
+            }
+            公共书籍（十进制价格，整数值）
+            {
+                _price =价格；_amount =金额；
+                totalPrice + =金额*价格；
+            }
+        }
+
+        静态void Main（string [] args）
+        {
+            无效Calc <T>（Type [] tyoes，object [] obj）
+            {
+                var ci = typeof（Books）.GetConstructor（tyoes）;
+                如果（ci！= null）
+                {
+                    对象书= ci.Invoke（obj）;
+                    var p = typeof（Books）.GetProperty（“ subTotalPrice”）;
+                    var subTotalPrice = p.GetValue（book）;
+                    Console.WriteLine（$“销售图书{subTotalPrice}”）;
+                }
+            }
+            Calc <Books>（Type.EmptyTypes，null）;
+            Calc <Books>（new [] {typeof（decimal），typeof（int）}，new object [] {80m，4}）;
+            var f = typeof（Books）.GetField（“ totalPrice”）;
+            var totalPrice = f.GetValue（null）;
+            Console.WriteLine（$“逐步销售图书{totalPrice}元”）;
+        }
+    }
+}
+
+（三）
+使用系统；
+命名空间ConsoleApp1
+{
+    班级计划
+    {
+        公共课本
+        {
+            字符串_bookNmae; 十进制价格 int _amount;
+            小数subTotalPrice {获取{返回_price * _amount; }}
+            public static int totalAmount; 公共静态小数totalPrice;
+            公共书籍（字符串bookNmae，十进制价格，整数值）
+            {
+                _bookNmae = bookNmae; _price =价格；_amount =金额；
+                totalAmount + = _amount;
+                totalPrice + = subTotalPrice;
+            }
+            公共无效outSub（）
+            {
+                Console.WriteLine（$“购买《 {_bookNmae}》 {_ amount}本，合计{subTotalPrice}元”）；
+            }
+            公共静态无效outToal（十进制disCount）
+            {
+                Console.WriteLine（$“累积购买图书{totalAmount}本，转换{totalPrice}元”）;
+                Console.WriteLine（$“打{disCount * 10}折后，实收金额{totalPrice * disCount}元”）;
+            }
+        }
+        静态void Main（string [] args）
+        {
+            var book1 = new Books（“数据库”，30.23m，20）;
+            var book2 = new Books（“ C＃”，40.5m，10）;
+            var outsub = typeof（Books）.GetMethod（“ outSub”）;
+            outsub.Invoke（book1，null）;
+            outsub.Invoke（book2，null）;
+            var outtotal = typeof（Books）.GetMethod（“ outToal”）;
+            outtotal.Invoke（null，新对象[] {0.9m}）;
+        }
+    }
+}
